@@ -13,25 +13,30 @@ const DIRECTIONS: [[i8; 2]; 8] = [
 ];
 
 fn in_bounds(x: i8, y: i8) -> bool {
-    x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT
+    (0..WIDTH).contains(&x) && (0..HEIGHT).contains(&y)
 }
 
 fn search(x: i8, y: i8, val: u8, dir: [i8; 2], count: i8, grid: &[[u8; 7]; 6]) -> bool {
-    let sx = x as i8 + dir[0];
-    let sy = y as i8 + dir[1];
+    let sx = x + dir[0];
+    let sy = y + dir[1];
 
     if in_bounds(sx, sy) {
         let sibling_cell = grid[sy as usize][sx as usize];
         if sibling_cell == val {
-            if count < 4 {
-                return search(sx, sy, val, dir, count + 1, grid);
-            } else if count == 4 {
-                return true;
+            // if count < 4 {
+            //     return search(sx, sy, val, dir, count + 1, grid);
+            // } else if count == 4 {
+            //     return true;
+            // }
+            match count {
+                0..4 => return search(sx, sy, val, dir, count + 1, grid),
+                4 => return true,
+                _ => (),
             }
         }
     }
 
-    return false;
+    false
 }
 
 pub fn is_connect_four(grid: [[u8; 7]; 6]) -> bool {
@@ -51,7 +56,7 @@ pub fn is_connect_four(grid: [[u8; 7]; 6]) -> bool {
         }
     }
 
-    return false;
+    false
 }
 
 pub fn is_tie_game(grid: [[u8; 7]; 6]) -> bool {
@@ -62,7 +67,7 @@ pub fn is_tie_game(grid: [[u8; 7]; 6]) -> bool {
             }
         }
     }
-    return true;
+    true
 }
 
 pub fn get_lowest_tile_position(col: usize, row: usize, grid: [[u8; 7]; 6]) -> [usize; 2] {
@@ -94,7 +99,7 @@ mod tests {
             [0, 0, 0, 0, 0, 0, 0],
         ];
 
-        assert_eq!(is_connect_four(grid), false);
+        assert!(!is_connect_four(grid));
     }
 
     #[test]
@@ -108,7 +113,7 @@ mod tests {
             [1, 2, 2, 1, 0, 0, 0],
         ];
 
-        assert_eq!(is_connect_four(grid), true);
+        assert!(is_connect_four(grid));
     }
 
     #[test]
@@ -122,7 +127,7 @@ mod tests {
             [2, 2, 2, 1, 0, 0, 0],
         ];
 
-        assert_eq!(is_connect_four(grid), true);
+        assert!(is_connect_four(grid));
     }
 
     #[test]
@@ -136,7 +141,7 @@ mod tests {
             [0, 2, 0, 1, 0, 0, 0],
         ];
 
-        assert_eq!(is_connect_four(grid), false);
+        assert!(!is_connect_four(grid));
     }
 
     #[test]
@@ -150,7 +155,7 @@ mod tests {
             [0, 0, 2, 2, 0, 0, 0],
         ];
 
-        assert_eq!(is_connect_four(grid), true);
+        assert!(is_connect_four(grid));
     }
 
     #[test]
@@ -164,7 +169,7 @@ mod tests {
             [2, 2, 2, 2, 2, 2, 1],
         ];
 
-        assert_eq!(is_tie_game(grid), true);
+        assert!(is_tie_game(grid));
     }
 
     #[test]
@@ -178,7 +183,7 @@ mod tests {
             [2, 2, 2, 2, 2, 2, 0],
         ];
 
-        assert_eq!(is_tie_game(grid), false);
+        assert!(!is_tie_game(grid));
     }
 
     #[test]
