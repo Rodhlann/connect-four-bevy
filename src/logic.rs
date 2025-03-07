@@ -23,11 +23,6 @@ fn search(x: i8, y: i8, val: u8, dir: [i8; 2], count: i8, grid: &[[u8; 7]; 6]) -
     if in_bounds(sx, sy) {
         let sibling_cell = grid[sy as usize][sx as usize];
         if sibling_cell == val {
-            // if count < 4 {
-            //     return search(sx, sy, val, dir, count + 1, grid);
-            // } else if count == 4 {
-            //     return true;
-            // }
             match count {
                 0..4 => return search(sx, sy, val, dir, count + 1, grid),
                 4 => return true,
