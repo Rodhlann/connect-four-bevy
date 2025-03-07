@@ -1,7 +1,14 @@
 use crate::{types::GameState, GameOverMenu};
 use bevy::{color::palettes::css::*, prelude::*};
 
-pub fn check_game_over(state: Res<GameState>, commands: Commands, query: Query<&GameOverMenu>) {
+pub struct GameOverPlugin;
+impl Plugin for GameOverPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(Update, (game_over_interaction_system, check_game_over));
+    }
+}
+
+fn check_game_over(state: Res<GameState>, commands: Commands, query: Query<&GameOverMenu>) {
     if !query.is_empty() {
         return;
     }
@@ -10,7 +17,7 @@ pub fn check_game_over(state: Res<GameState>, commands: Commands, query: Query<&
     }
 }
 
-pub fn game_over_interaction_system(
+fn game_over_interaction_system(
     mut interaction_query: Query<
         (&mut BackgroundColor, &Interaction),
         (Changed<Interaction>, With<Button>, With<GameOverMenu>),
@@ -35,7 +42,7 @@ pub fn game_over_interaction_system(
     }
 }
 
-pub fn game_over_menu_setup(state: Res<GameState>, mut commands: Commands) {
+fn game_over_menu_setup(state: Res<GameState>, mut commands: Commands) {
     commands
         .spawn((
             GameOverMenu,

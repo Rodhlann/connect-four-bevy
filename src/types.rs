@@ -17,6 +17,3 @@ pub struct Position(pub usize, pub usize);
 
 #[derive(Component)]
 pub struct GameOverMenu;
-
-#[derive(Component)]
-pub struct StartMenu;

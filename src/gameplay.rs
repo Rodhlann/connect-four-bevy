@@ -9,6 +9,14 @@ const PLAYER_ONE_BUTTON: Srgba = Srgba::RED;
 const PLAYER_TWO_BUTTON: Srgba = Srgba::rgb(225.0, 225.0, 0.0);
 const HINT_BUTTON: Srgba = Srgba::new(0.17, 0.17, 0.17, 1.0);
 
+pub struct GameplayPlugin;
+impl Plugin for GameplayPlugin {
+    fn build(&self, app: &mut App) {
+        app.init_resource::<GameState>();
+        app.add_systems(Update, (grid_interaction_system, grid_visuals_system));
+    }
+}
+
 pub fn grid_interaction_system(
     mut interaction_query: Query<(&Interaction, &Position), (Changed<Interaction>, With<Button>)>,
     mut state: ResMut<GameState>,
@@ -68,53 +76,4 @@ pub fn grid_visuals_system(
             }
         }
     }
-}
-
-pub fn grid_ui_setup(mut commands: Commands) {
-    commands
-        .spawn((
-            Node {
-                display: Display::Grid,
-                width: Val::Percent(100.0),
-                height: Val::Percent(100.0),
-                padding: UiRect::all(Val::Px(24.0)),
-                grid_template_rows: RepeatedGridTrack::flex(6, 1.0),
-                grid_template_columns: RepeatedGridTrack::flex(7, 1.0),
-                row_gap: Val::Px(12.0),
-                column_gap: Val::Px(12.0),
-                ..default()
-            },
-            BackgroundColor(NAVY.into()),
-        ))
-        .with_children(|parent| {
-            for row in 0..6 {
-                for col in 0..7 {
-                    parent
-                        .spawn((
-                            Node {
-                                display: Display::Grid,
-                                justify_content: JustifyContent::Center,
-                                align_items: AlignItems::Start,
-                                padding: UiRect::all(Val::Px(10.0)),
-                                row_gap: Val::Px(20.0),
-                                ..default()
-                            },
-                            BackgroundColor(NAVY.into()),
-                        ))
-                        .with_children(|parent| {
-                            parent.spawn((
-                                Position(col, row),
-                                Button,
-                                Node {
-                                    width: Val::Percent(100.0),
-                                    height: Val::Percent(100.0),
-                                    ..default()
-                                },
-                                BorderRadius::all(Val::Percent(50.0)),
-                                BackgroundColor(BLACK.into()),
-                            ));
-                        });
-                }
-            }
-        });
 }
