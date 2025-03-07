@@ -1,13 +1,14 @@
 use bevy::{color::palettes::css::*, prelude::*};
 
-use crate::types::Position;
-
 pub struct UIInitPlugin;
 impl Plugin for UIInitPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, (grid_ui_setup, global_ui_setup));
     }
 }
+
+#[derive(Component)]
+pub struct Position(pub usize, pub usize);
 
 fn global_ui_setup(mut commands: Commands) {
     commands.spawn(Camera2d);

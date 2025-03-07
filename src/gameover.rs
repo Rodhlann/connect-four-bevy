@@ -1,5 +1,9 @@
-use crate::{types::GameState, GameOverMenu};
 use bevy::{color::palettes::css::*, prelude::*};
+
+use crate::gameplay::GameState;
+
+#[derive(Component)]
+pub struct GameOverMenu;
 
 pub struct GameOverPlugin;
 impl Plugin for GameOverPlugin {

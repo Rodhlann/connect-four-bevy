@@ -2,12 +2,22 @@ use bevy::{color::palettes::css::*, prelude::*};
 
 use crate::{
     logic::{get_lowest_tile_position, is_connect_four, is_tie_game},
-    types::{GameState, Position},
+    ui::Position,
 };
 
 const PLAYER_ONE_BUTTON: Srgba = Srgba::RED;
-const PLAYER_TWO_BUTTON: Srgba = Srgba::rgb(225.0, 225.0, 0.0);
+const RGB: Srgba = Srgba::rgb(225.0, 225.0, 0.0);
+const PLAYER_TWO_BUTTON: Srgba = RGB;
 const HINT_BUTTON: Srgba = Srgba::new(0.17, 0.17, 0.17, 1.0);
+
+#[derive(Resource, Default)]
+pub struct GameState {
+    pub grid: [[u8; 7]; 6],
+    pub player: u8,
+    pub game_over: bool,
+    pub tie_game: bool,
+    pub hovered_col: Option<usize>,
+}
 
 pub struct GameplayPlugin;
 impl Plugin for GameplayPlugin {

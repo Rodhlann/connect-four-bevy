@@ -3,12 +3,10 @@ use bevy::{prelude::*, winit::WinitSettings};
 mod gameover;
 mod gameplay;
 mod logic;
-mod types;
 mod ui;
 
 use gameover::GameOverPlugin;
 use gameplay::GameplayPlugin;
-use types::GameOverMenu;
 use ui::UIInitPlugin;
 
 fn main() {
